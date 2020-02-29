@@ -1,14 +1,10 @@
 package com.minibudget.service.impl;
 
-import com.minibudget.model.LoginResult;
-import com.minibudget.model.Message;
+import com.minibudget.dao.UserDao;
+import com.minibudget.dao.impl.UserDaoImpl;
 import com.minibudget.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.minibudget.util.PasswordUtil;
-
-import com.minibudget.dao.UserDao;
-import com.minibudget.dao.MessageDao;
 
 @Service
 public class MiniBudgetService {
@@ -16,32 +12,30 @@ public class MiniBudgetService {
 
     private PasswordUtil passwordUtil;
 
-    private UserDao userDao;
-
-    private MessageDao messageDao;
+    private UserDaoImpl userDao;
 
     public User getUserbyUsername(String username) {
         return userDao.getUserbyUsername(username);
     }
 
-    public LoginResult checkUser(User user) {
-        LoginResult result = new LoginResult();
-        User userFound = userDao.getUserbyUsername(user.getUsername());
+    public boolean checkUser(User user) {
+        if(user == null) return false;
+        User userFound = userDao.getUserbyUsername(user.getUserName());
         if(userFound == null) {
-            result.setError("Invalid username");
-        } else if(!PasswordUtil.verifyPassword(user.getPassword(), userFound.getPassword())) {
-            result.setError("Invalid password");
+            return false;
+        } else if(user.getUserPassword().equals(userFound.getUserPassword())) {
+            return false;
         } else {
-            result.setUser(userFound);
+            return true;
         }
-
-        return result;
     }
+
+    /*
     public void registerUser(User user) {
         user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
         userDao.registerUser(user);
     }
 
     public void addMessage(Message m) {
-    }
+    }*/
 }

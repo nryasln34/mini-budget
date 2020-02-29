@@ -1,4 +1,5 @@
 package com.minibudget.dao;
+
 import com.minibudget.model.User;
 
 public interface UserDao {

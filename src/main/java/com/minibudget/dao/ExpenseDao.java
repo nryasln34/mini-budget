@@ -1,5 +1,4 @@
 package com.minibudget.dao;
 
-public interface MessageDao {
-
+public interface ExpenseDao {
 }
