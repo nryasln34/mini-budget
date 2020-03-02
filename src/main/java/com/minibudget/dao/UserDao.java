@@ -1,10 +1,10 @@
 package com.minibudget.dao;
 
-import com.minibudget.model.User;
+import com.minibudget.model.UsersEntity;
 
 public interface UserDao {
 
-    User getUserbyUsername(String username);
+    UsersEntity getUserbyUsername(String username);
 
-    void registerUser(User user);
+    void registerUser(UsersEntity user);
 }

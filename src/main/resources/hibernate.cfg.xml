@@ -4,21 +4,30 @@
 
 <hibernate-configuration>
     <session-factory>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/mini_budget</property>
         <property name="dialect">org.hibernate.dialect.MySQL57Dialect</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
-        <property name="show_sql">true</property>
+        <!-- C3P0 connection pool -->
+        <property name="hibernate.c3p0.timeout">600</property>
+        <property name="hibernate.c3p0.maxIdleTimeExcessConnections">20</property>
+        <!--  Connection testing settings -->
+        <property name="hibernate.c3p0.validate">false</property>
+        <property name="hibernate.c3p0.idle_test_period">30</property>
+        <property name="hibernate.c3p0.automaticTestTable">conTestTable</property>
 
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
 
-        <property name="transaction.factory_class">
-            org.hibernate.transaction.JDBCTransactionFactory
-        </property>
         <property name="hbm2ddl.auto">update</property>
 
-<!--        <mapping class="com.minibudget.model.Income" />
-        <mapping class="com.minibudget.model.Expense" />
-        <mapping class="com.minibudget.model.User" />-->
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+
+        <mapping class="com.minibudget.model.IncomeEntity" />
+        <mapping class="com.minibudget.model.ExpenseEntity" />
+        <mapping class="com.minibudget.model.UsersEntity" />
     </session-factory>
 
 </hibernate-configuration>

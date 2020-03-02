@@ -2,7 +2,8 @@ package com.minibudget.service.impl;
 
 import com.minibudget.dao.UserDao;
 import com.minibudget.dao.impl.UserDaoImpl;
-import com.minibudget.model.User;
+import com.minibudget.model.UsersEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.minibudget.util.PasswordUtil;
 
@@ -12,18 +13,19 @@ public class MiniBudgetService {
 
     private PasswordUtil passwordUtil;
 
-    private UserDaoImpl userDao;
+    @Autowired
+    private UserDao userDao;
 
-    public User getUserbyUsername(String username) {
+    public UsersEntity getUserbyUsername(String username) {
         return userDao.getUserbyUsername(username);
     }
 
-    public boolean checkUser(User user) {
+    public boolean checkUser(UsersEntity user) {
         if(user == null) return false;
-        User userFound = userDao.getUserbyUsername(user.getUserName());
+        UsersEntity userFound = userDao.getUserbyUsername(user.getName());
         if(userFound == null) {
             return false;
-        } else if(user.getUserPassword().equals(userFound.getUserPassword())) {
+        } else if(!user.getPassword().equals(userFound.getPassword())) {
             return false;
         } else {
             return true;

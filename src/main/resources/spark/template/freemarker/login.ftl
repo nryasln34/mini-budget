@@ -19,14 +19,14 @@
         <div class="form-group">
             <label for="username" class="col-sm-2 control-label">Username: </label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="userName" id="username" placeholder="Username" value="${userName!}" />
+                <input type="text" class="form-control" name="name" id="username" placeholder="Username" value="${name!}" />
             </div>
         </div>
 
         <div class="form-group">
             <label for="userPassword" class="col-sm-2 control-label">Password: </label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" name="userPassword" placeholder="Password">
+                <input type="password" class="form-control" name="password" placeholder="Password">
             </div>
         </div>
 

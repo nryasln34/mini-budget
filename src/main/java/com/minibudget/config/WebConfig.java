@@ -8,31 +8,23 @@ import static spark.Spark.staticFileLocation;
 
 import java.util.*;
 
-import com.minibudget.model.User;
+import com.minibudget.model.UsersEntity;
 import com.minibudget.service.impl.MiniBudgetService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
-
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.freemarker.FreeMarkerEngine;
-import spark.utils.StringUtils;
-
-import javax.persistence.EntityManager;
 
 public class WebConfig {
 
     private static final String USER_SESSION_ID = "user";
     private MiniBudgetService service;
-    private SessionFactory sf;
 
 
-    public WebConfig(MiniBudgetService service, SessionFactory sf) {
+    public WebConfig(MiniBudgetService service) {
         this.service = service;
-        this.sf = sf;
         staticFileLocation("/public");
         setupRoutes();
     }
@@ -42,7 +34,7 @@ public class WebConfig {
 
 
         get("/", (req, res) -> {
-            User user = getAuthenticatedUser(req);
+            UsersEntity user = getAuthenticatedUser(req);
             Map<String, Object> map = new HashMap<>();
             map.put("pageTitle", "Timeline");
             map.put("user", user);
@@ -50,7 +42,7 @@ public class WebConfig {
             return new ModelAndView(map, "timeline.ftl");
         }, new FreeMarkerEngine());
         before("/", (req, res) -> {
-            User user = getAuthenticatedUser(req);
+            UsersEntity user = getAuthenticatedUser(req);
             if(user == null) {
                 res.redirect("/public");
                 halt();
@@ -58,7 +50,7 @@ public class WebConfig {
         });
 
         get("/public", (req, res) -> {
-            User user = getAuthenticatedUser(req);
+            UsersEntity user = getAuthenticatedUser(req);
             Map<String, Object> map = new HashMap<>();
             map.put("pageTitle", "Dashboard");
             map.put("user", user);
@@ -76,7 +68,7 @@ public class WebConfig {
 
         post("/login", (req, res) -> {
             Map<String, Object> map = new HashMap<>();
-            User user = new User();
+            UsersEntity user = new UsersEntity();
             try {
                 MultiMap<String> params = new MultiMap<String>();
                 UrlEncoded.decodeTo(req.body(), params, "UTF-8");
@@ -85,23 +77,20 @@ public class WebConfig {
                 halt(501);
                 return null;
             }
-            EntityManager session = sf.createEntityManager();
-            User user2 = session.find(User.class, user.getUserName());
-            if(user2 != null)
-            //boolean result = service.checkUser(user);
-            if(user2 != null) {
+            boolean result = service.checkUser(user);
+            if(result) {
                 addAuthenticatedUser(req, user);
                 res.redirect("/");
                 halt();
             } else {
                 map.put("error", "Giriş hatalı!");
             }
-            map.put("username", user.getUserName());
+            map.put("username", user.getName());
             return new ModelAndView(map, "login.ftl");
         }, new FreeMarkerEngine());
 
         before("/login", (req, res) -> {
-            User authUser = getAuthenticatedUser(req);
+            UsersEntity authUser = getAuthenticatedUser(req);
             if(authUser != null) {
                 res.redirect("/");
                 halt();
@@ -109,7 +98,7 @@ public class WebConfig {
         });
     }
 
-    private void addAuthenticatedUser(Request request, User u) {
+    private void addAuthenticatedUser(Request request, UsersEntity u) {
         request.session().attribute(USER_SESSION_ID, u);
 
     }
@@ -119,7 +108,7 @@ public class WebConfig {
 
     }
 
-    private User getAuthenticatedUser(Request request) {
+    private UsersEntity getAuthenticatedUser(Request request) {
         return request.session().attribute(USER_SESSION_ID);
     }
 }

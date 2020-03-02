@@ -10,7 +10,7 @@
             <#if pageTitle != 'Dashboard'>
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">What's on your mind ${user.username}?</h3>
+                        <h3 class="panel-title">What's on your mind ${user.name}?</h3>
                     </div>
 
                     <div class="panel-body">

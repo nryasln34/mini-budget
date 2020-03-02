@@ -17,8 +17,7 @@ public class MiniBudgetApplication {
 	public static void main(String[] args) {
 
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MiniBudgetApplication.class);
-		SessionFactory sf = new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
-		new WebConfig(ctx.getBean(MiniBudgetService.class),sf);
+		new WebConfig(ctx.getBean(MiniBudgetService.class));
 		ctx.registerShutdownHook(); //Spring Framework'ün bir web application'u kapatma methodu(Application Context'le çalışmakta)
 
 

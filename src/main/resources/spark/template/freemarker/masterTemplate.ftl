@@ -29,7 +29,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <#if user??>
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="/logout">Sign Out [${user.username}]</a></li>
+                    <li><a href="/logout">Sign Out [${user.name}]</a></li>
                 <#else>
                     <li><a href="/register">Sign Up</a></li>
                     <li><a href="/login">Sign In</a></li>
