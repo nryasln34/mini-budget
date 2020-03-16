@@ -26,8 +26,11 @@
         <property name="show_sql">true</property>
 
         <mapping class="com.minibudget.model.IncomeEntity" />
+        <mapping class="com.minibudget.model.IncomeEntityPK" />
         <mapping class="com.minibudget.model.ExpenseEntity" />
+        <mapping class="com.minibudget.model.ExpenseEntityPK" />
         <mapping class="com.minibudget.model.UsersEntity" />
+
     </session-factory>
 
 </hibernate-configuration>

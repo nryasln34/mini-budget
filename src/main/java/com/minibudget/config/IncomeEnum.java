@@ -1,0 +1,6 @@
+package com.minibudget.config;
+
+public enum IncomeEnum {
+    MAAS, PRIM, KOMISYON, YATIRIMGETIRISI, DUKKANKIRASI, DANISMANLIK,
+    EVKIRASI,BURS, HARCLIK, SANSOYUNU, ALACAKLAR, DIGER;
+}

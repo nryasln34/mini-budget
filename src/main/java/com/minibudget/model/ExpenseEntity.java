@@ -5,13 +5,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "expense", schema = "mini_budget", catalog = "")
+@IdClass(ExpenseEntityPK.class)
 public class ExpenseEntity {
     private int id;
-    private String type;
-    private int amount;
+    private Integer amount;
     private String currency;
     private String date;
     private String notes;
+    private String type;
+    private int usersId;
 
     @Id
     @Column(name = "id")
@@ -24,22 +26,12 @@ public class ExpenseEntity {
     }
 
     @Basic
-    @Column(name = "type")
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Basic
     @Column(name = "amount")
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
@@ -73,21 +65,42 @@ public class ExpenseEntity {
         this.notes = notes;
     }
 
+    @Basic
+    @Column(name = "type")
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Id
+    @Column(name = "users_id")
+    public int getUsersId() {
+        return usersId;
+    }
+
+    public void setUsersId(int usersId) {
+        this.usersId = usersId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseEntity that = (ExpenseEntity) o;
         return id == that.id &&
-                amount == that.amount &&
-                Objects.equals(type, that.type) &&
+                usersId == that.usersId &&
+                Objects.equals(amount, that.amount) &&
                 Objects.equals(currency, that.currency) &&
                 Objects.equals(date, that.date) &&
-                Objects.equals(notes, that.notes);
+                Objects.equals(notes, that.notes) &&
+                Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, amount, currency, date, notes);
+        return Objects.hash(id, amount, currency, date, notes, type, usersId);
     }
 }

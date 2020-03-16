@@ -4,7 +4,7 @@ import com.minibudget.model.UsersEntity;
 
 public interface UserDao {
 
-    UsersEntity getUserbyUsername(String username);
+    UsersEntity getUserbyEmail(String email);
 
-    void registerUser(UsersEntity user);
+    UsersEntity registerUser(UsersEntity user);
 }

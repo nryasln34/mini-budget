@@ -6,23 +6,26 @@ import com.minibudget.util.HibernateUtil;
 import org.eclipse.jetty.server.Authentication;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
     @Override
-    public UsersEntity getUserbyUsername(String username) {
+    public UsersEntity getUserbyEmail(String email) {
         UsersEntity user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            //session.createNativeQuery("select * from users table").list();
-            Query qry = session.createQuery("From UsersEntity as rb where rb.name like :name ");
-            if (username!= null)
+            //session.createNativeQuery("select0 * from users table").list();
+            Query qry = session.createQuery("From UsersEntity as rb where rb.email like :email ");
+            if (email!= null)
             {
-                qry.setString("name","%"+username+"%");
+                qry.setString("email","%"+email+"%");
             }
             List users = qry.list();
             Iterator it = users.iterator();
@@ -38,7 +41,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void registerUser(UsersEntity user) {
+    public UsersEntity registerUser(UsersEntity user) {
+
+        Session session= HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(user);
+        session.getTransaction().commit();
+        return user;
+
+        }
     }
 
-}
+

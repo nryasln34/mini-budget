@@ -22,17 +22,18 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/">MiniBudget</a>
+            <a class="navbar-brand" href="/">Bütçeni Bil</a>
         </div>
 
         <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <#if user??>
-                    <li><a href="/">Dashboard</a></li>
-                    <li><a href="/logout">Sign Out [${user.name}]</a></li>
+                    <li><a href="/">Hoşgeldiniz</a></li>
+                    <li><a href="/allProcess">Net Durum Tablom</a></li>
+                    <li><a href="/logout">Çıkış Yap [${user.name}]</a></li>
                 <#else>
-                    <li><a href="/register">Sign Up</a></li>
-                    <li><a href="/login">Sign In</a></li>
+                    <li><a href="/register">Kayıt Ol</a></li>
+                    <li><a href="/login">Giriş Yap</a></li>
                 </#if>
             </ul>
         </div>
@@ -43,7 +44,7 @@
     </div>
 
     <footer class="footer">
-        <p>MiniBudget &mdash; A Spark Application - Develop By Monotect</p>
+        <p>MiniBudget &mdash; A Spark-Java Application - Develop By nirayaslan</p>
     </footer>
 </div><!-- /container -->
 </body>
