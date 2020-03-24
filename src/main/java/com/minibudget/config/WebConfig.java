@@ -7,6 +7,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFileLocation;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.minibudget.model.ExpenseEntity;
@@ -154,22 +155,6 @@ public class WebConfig {
             }
         });
 
-
-
-        /*
-         * Add a new income.
-         */
-
-        get("/public", (req, res) -> {
-            UsersEntity user = getAuthenticatedUser(req);
-            Map<String, Object> map = new HashMap<>();
-            map.put("pageTitle", "Anasayfa");
-            map.put("user", user);
-            List<IncomeEntity> incomes = (List<IncomeEntity>) service.getAllIncome();
-            map.put("incomes", incomes);
-            return new ModelAndView(map, "income.ftl");
-        }, new FreeMarkerEngine());
-
         post("/addIncome", (req, res) -> {
             UsersEntity user = getAuthenticatedUser(req);
             MultiMap<String> params = new MultiMap<String>();
@@ -192,21 +177,6 @@ public class WebConfig {
             }
         });
 
-
-        /*
-         * Add a new expense.
-         */
-
-       /* get("/public", (req, res) -> {
-            UsersEntity user = getAuthenticatedUser(req);
-            Map<String, Object> map = new HashMap<>();
-            map.put("pageTitle", "Anasayfa");
-            map.put("user", user);
-           List<ExpenseEntity> expenses = (List<ExpenseEntity>) service.getAllExpense();
-            map.put("expenses", expenses);
-            return new ModelAndView(map, "income.ftl");
-        }, new FreeMarkerEngine());*/
-
         post("/addExpense", (req, res) -> {
             UsersEntity user = getAuthenticatedUser(req);
             MultiMap<String> params = new MultiMap<String>();
@@ -215,7 +185,7 @@ public class WebConfig {
             ExpenseEntity expense = new ExpenseEntity();
             BeanUtils.populate(expense, params);
             expense.setUsersId(user.getId());
-            //expense.setDate(DateUtil.toTimeStamp(new Date()));
+            expense.setDate(DateUtil.toTimeStamp(new Date()));
             service.addExpense(expense);
             res.redirect("/");
             return expense;
@@ -242,21 +212,27 @@ public class WebConfig {
             UsersEntity user = getAuthenticatedUser(req);
             Map<String, Object> map = new HashMap<>();
             map.put("user", user);
-            List<ExpenseEntity> expenses = (List<ExpenseEntity>) service.getAllExpense();
+
+            List<ExpenseEntity> expenses = (List<ExpenseEntity>) service.getAllExpense(user.getId());
             map.put("expenses", expenses);
+
+            List<IncomeEntity> incomes = (List<IncomeEntity>) service.getAllIncome(user.getId());
+            map.put("incomes", incomes);
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            //30 gün önceki tarih
+            Date old = new Date();
+            old.setMonth(old.getMonth() - 1);
+            String oldDateSTR = format.format(old);
+            map.put("fromDate",oldDateSTR);
+            Date current = new Date();
+            String currentDateSTR = format.format(current);
+            map.put("toDate",currentDateSTR);
+            map.put("totalExpenseAmount",service.getExpenseTotalAmount(expenses));
+            map.put("totalIncomeAmount",service.getIncomeTotalAmount(incomes));
             return new ModelAndView(map, "allProcess.ftl");
         }, new FreeMarkerEngine());
 
-
-    }
-
-    private void getAllProcess(Request request){
-       // List<ExpenseEntity> expenses = service.getAllExpense();
-        //List<IncomeEntity> incomes =service.getAllIncome();
-       // request.session().attribute(expenses.toString());
-       // request.session().attribute(incomes.toString());
-      // request.session().attribute(INCOME_ID);
-      // request.session().attribute(EXPENSE_ID);
     }
 
     private void addAuthenticatedUser(Request request, UsersEntity u) {

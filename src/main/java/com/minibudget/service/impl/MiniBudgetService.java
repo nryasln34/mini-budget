@@ -61,13 +61,27 @@ public class MiniBudgetService {
         return expenseDao.addExpense(expense);
     }
 
-    public List<IncomeEntity> getAllIncome() {
-        return incomeDao.getAllIncome();
+    public List<IncomeEntity> getAllIncome(int userId) {
+        return incomeDao.getAllIncome(userId);
     }
 
-    public List<ExpenseEntity> getAllExpense() {
-        return  expenseDao.getAllExpense(); }
+    public List<ExpenseEntity> getAllExpense(int userId) {
+        return  expenseDao.getAllExpense(userId);
+    }
 
+    public Integer getExpenseTotalAmount(List<ExpenseEntity> expenceList){
+        return expenceList.stream().mapToInt(ExpenseEntity::getAmount).sum();
+/*        // before java 8
+        sum = 0;
+        for(int i = 0; i < expenceList.size() ; i++){
+            sum += expenceList.get(i).getAmount();
+        }
+        return sum;*/
+    }
+
+    public Integer getIncomeTotalAmount(List<IncomeEntity> incomeList){
+        return incomeList.stream().mapToInt(IncomeEntity::getAmount).sum();
+    }
 
     public String validate(UsersEntity user, String password2) {
         String error = null;

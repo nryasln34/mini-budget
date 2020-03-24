@@ -49,7 +49,13 @@
                             <div class="input-group">
                                 <input type="text" name="amount" class="form-control" placeholder="amount" required/>
                                 <input type="text" name="currency" class="form-control" placeholder="currency" required/>
-                                <input type="text" name="type" class="form-control" placeholder="type" required/>
+<#--                                <input type="text" name="type" class="form-control" placeholder="type" required/>-->
+                                <label for="type">Choose a type:</label>
+                                <select id="type" name="type">
+                                    <#list expenseEnum as item>
+                                        <option value="${item}">${item}</option>
+                                    </#list>
+                                </select>
                                 <input type="text" name="note" class="form-control" placeholder="note" required/>
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit"> Insert </button>

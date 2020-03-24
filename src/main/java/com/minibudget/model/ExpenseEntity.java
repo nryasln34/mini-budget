@@ -1,6 +1,7 @@
 package com.minibudget.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +11,7 @@ public class ExpenseEntity {
     private int id;
     private Integer amount;
     private String currency;
-    private String date;
+    private Timestamp date;
     private String notes;
     private String type;
     private int usersId;
@@ -47,11 +48,11 @@ public class ExpenseEntity {
 
     @Basic
     @Column(name = "date")
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

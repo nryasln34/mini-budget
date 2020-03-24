@@ -8,5 +8,5 @@ public interface ExpenseDao {
 
     ExpenseEntity addExpense(ExpenseEntity expense);
 
-    List<ExpenseEntity> getAllExpense();
+    List<ExpenseEntity> getAllExpense(int userId);
 }

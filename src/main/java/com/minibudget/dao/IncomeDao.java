@@ -8,5 +8,5 @@ public interface IncomeDao {
 
      IncomeEntity addIncome(IncomeEntity income);
 
-     List<IncomeEntity> getAllIncome();
+     List<IncomeEntity> getAllIncome(int userId);
 }
